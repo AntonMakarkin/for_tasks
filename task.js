@@ -22,7 +22,7 @@ var expense_cost_2 = prompt("Во сколько это обойдется?", ""
 appData.expenses.expense_point_1 = expense_cost_1;
 appData.expenses.expense_point_2 = expense_cost_2;
 
-alert(expense_cost/30);
+alert(appData.budget/30);
 
 
 
