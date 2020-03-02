@@ -32,5 +32,5 @@ window.addEventListener('DOMContentLoaded', function() {
                 }
             }
         }
-    })
+    });
 });
