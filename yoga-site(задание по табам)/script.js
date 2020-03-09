@@ -58,7 +58,7 @@ window.addEventListener('DOMContentLoaded', function() {
         let timer = document.getElementById(id),
             hours = timer.querySelector('.hours'),
             minutes = timer.querySelector('.minutes'),
-            seconds = timer.querySelector('.seconds');
+            seconds = timer.querySelector('.seconds'),
             timeInterval = setInterval(updateClock, 1000);
         
         //обновляем таймер
@@ -89,4 +89,44 @@ window.addEventListener('DOMContentLoaded', function() {
     }
 
     setClock('timer', deadLine);
+
+    // Modal
+
+    let more = document.querySelector('.more'),
+        overlay = document.querySelector('.overlay'),
+        close = document.querySelector('.popup-close'),
+        description = document.querySelectorAll('.description-btn');
+
+    function ModalWindowCall(btnshow, overlay, btnclose) {
+        btnshow.addEventListener('click', function () {
+            overlay.style.display = 'block';
+            this.classList.add('more-splash');
+            document.body.style.overflow = 'hidden';
+        });
+
+        btnclose.addEventListener('click', function () {
+            overlay.style.display = 'none';
+            btnshow.classList.remove('more-splash');
+            document.body.style.overflow = '';
+        });
+    }
+
+    ModalWindowCall(more, overlay, close); //For button under timer
+    ModalWindowCall(description[0], overlay, close); // For buttons in description
+    ModalWindowCall(description[1], overlay, close); // For buttons in description
+    ModalWindowCall(description[2], overlay, close); // For buttons in description
+    ModalWindowCall(description[3], overlay, close); // For buttons in description
+
 });
+
+// Второе задание
+
+ /*<input id="age" value="30">
+ 
+ let age = document.getElementById('age');
+
+ function showUser(surname, name) {
+          alert("Пользователь " + surname + " " + name + ", его возраст " + this.value);
+}
+
+showUser.apply(age, ["Горький","Максим"]);*/

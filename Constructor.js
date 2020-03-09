@@ -23,7 +23,7 @@ ivan.exit();*/
 
 //Контексты вызова
 
-function showThis() {
+/*function showThis() {
     console.log(this);
     function sum() {
         console.log(this);
@@ -33,7 +33,57 @@ function showThis() {
     console.log(sum());
 }
 showThis(4,5);
-showThis(5,5);
+showThis(5,5);*/
+
+
+/*let obj = {
+    a: 20,
+    b: 15,
+    sum: function() {
+        console.log(this);
+        function shout() {
+            console.log(this)
+        }
+        shout();
+    }
+};
+obj.sum();*/
+
+/*let user = {
+    name: "John"
+};
+
+function sayName(surname) {
+    console.log(this);
+    console.log(this.name + surname);
+}
+
+console.log(sayName.call(user, 'Smith'));
+console.log(sayName.apply(user, ['Show']));
+
+function count(number) {
+    return this * number;
+}
+
+let double = count.bind(2);
+console.log(double(3));
+console.log(double(10));*/
+
+let btn = document.querySelector('button');
+
+btn.addEventListener('click', function() {
+    console.log(this); //получаем в качестве контекста вызова элемент
+    this.style.backgroundColor = 'red';
+    function showThis() {
+        console.log(this);
+    }
+    showThis(); //если мы вызываем ф-ию внутри ф-ии - контекст вызова window
+});
+
+// 1) Прочто вызов функции - window/undefined
+// 2) Метод обьекта - this = обьект
+// 3) Конструктор(new) - this = новый созданный обьект
+// 4) Указание конкретного контекста
 
 
 //Код на ЕS6
