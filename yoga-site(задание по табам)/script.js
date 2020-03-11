@@ -36,7 +36,7 @@ window.addEventListener('DOMContentLoaded', function() {
 
     // Timer
 
-    let deadLine = '2020-03-10';
+    let deadLine = '2020-03-15';
 
     function getTimeRemaining(endtime) { //определяем остаток времени
         let t = Date.parse(endtime) - Date.parse(new Date()),
