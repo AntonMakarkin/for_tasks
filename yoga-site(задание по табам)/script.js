@@ -131,45 +131,96 @@ window.addEventListener('DOMContentLoaded', function() {
         mainFormInput = mainForm.getElementsByTagName('input'), //форма в футере
         statusMessage = document.createElement('div');
 
-        statusMessage.classList.add('status');
+    statusMessage.classList.add('status');
 
-    form.addEventListener('submit', function(event){
+    form.addEventListener('submit', function (event) {
         event.preventDefault();
         form.appendChild(statusMessage);
 
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        //request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded'); //обычная форма
-        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        function CatchSend() {
 
-        let formData = new FormData(form);
+            return new Promise(function (resolve, reject) {
 
-        let obj = {};
+                let request = new XMLHttpRequest();
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-        formData.forEach(function(value, key) {
-            obj[key] = value;
-        });
+                let formData = new FormData(form),
+                    obj = {};
 
-        let json = JSON.stringify(obj);
+                formData.forEach(function (value, key) {
+                    obj[key] = value;
+                });
 
-        //request.send(formData); для обычной отправки
+                console.log(obj);
 
-        request.send(json);
+                let json = JSON.stringify(obj);
 
-        request.addEventListener('readystatechange', function() {
-            if (request.readyState < 4)
-            {
-                statusMessage.innerHTML = message.loading;
-            }
-            else if (request.readyState === 4 && request.status == 200)
-            {
-                statusMessage.innerHTML = message.success;
-            }
-            else
-            {
-                statusMessage.innerHTML = message.failure;
-            }
-        });
+                request.send(json);
+
+                request.onload = function () {
+                    if (request.readyState < 4) {
+                        statusMessage.innerHTML = message.loading;
+                    } else if (request.readyState === 4 && request.status == 200) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                };
+            });
+        }
+
+        CatchSend()
+            .then(() => statusMessage.innerHTML = message.success)
+            .catch(() => statusMessage.innerHTML = message.failure)
+
+        for (let i = 0; i < input.length; i++) //очищаем форму
+        {
+            input[i].value = '';
+        }
+
+    });
+
+    mainForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        mainForm.appendChild(statusMessage);
+
+        function CatchSend() {
+
+            return new Promise(function (resolve, reject) {
+
+                let request = new XMLHttpRequest();
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+
+                let formData = new FormData(form),
+                    obj = {};
+
+                formData.forEach(function (value, key) {
+                    obj[key] = value;
+                });
+
+                console.log(obj);
+
+                let json = JSON.stringify(obj);
+
+                request.send(json);
+
+                request.onload = function () {
+                    if (request.readyState < 4) {
+                        statusMessage.innerHTML = message.loading;
+                    } else if (request.readyState === 4 && request.status == 200) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                };
+            });
+        }
+
+        CatchSend()
+            .then(() => statusMessage.innerHTML = message.success)
+            .catch(() => statusMessage.innerHTML = message.failure)
 
         for (let i = 0; i < input.length; i++) //очищаем форму
         {
