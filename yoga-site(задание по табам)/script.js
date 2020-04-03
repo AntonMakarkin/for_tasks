@@ -233,33 +233,42 @@ window.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         mainForm.appendChild(statusMessage);
 
-        let request = new XMLHttpRequest();
-        request.open('POST', 'server.php');
-        request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+        function CatchSend() {
 
-        let formData = new FormData(mainForm);
+            return new Promise(function (resolve, reject) {
 
-        let obj = {};
+                let request = new XMLHttpRequest();
+                request.open('POST', 'server.php');
+                request.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 
-        formData.forEach(function (value, key) {
-            obj[key] = value;
-        });
+                let formData = new FormData(form),
+                    obj = {};
 
-        let json = JSON.stringify(obj);
+                formData.forEach(function (value, key) {
+                    obj[key] = value;
+                });
 
-        request.send(json);
+                console.log(obj);
 
-        request.addEventListener('readystatechange', function () {
-            if (request.readyState < 4) {
-                statusMessage.innerHTML = message.loading;
-            }
-            else if (request.readyState === 4 && request.status == 200) {
-                statusMessage.innerHTML = message.success;
-            }
-            else {
-                statusMessage.innerHTML = message.failure;
-            }
-        });
+                let json = JSON.stringify(obj);
+
+                request.send(json);
+
+                request.onload = function () {
+                    if (request.readyState < 4) {
+                        statusMessage.innerHTML = message.loading;
+                    } else if (request.readyState === 4 && request.status == 200) {
+                        resolve();
+                    } else {
+                        reject();
+                    }
+                };
+            });
+        }
+
+        CatchSend()
+            .then(() => statusMessage.innerHTML = message.success)
+            .catch(() => statusMessage.innerHTML = message.failure)
 
         for (let i = 0; i < input.length; i++) //очищаем форму
         {
@@ -267,7 +276,57 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    //Slider
 
+    let slideIndex = 1,
+        slides = document.querySelectorAll('.slider-item'),
+        prev = document.querySelector('.prev'),
+        next = document.querySelector('.next'),
+        dotsWrap = document.querySelector('.slider-dots'),
+        dots = document.querySelectorAll('.dot');
+
+    showSlides(slideIndex);    
+
+    function showSlides(n) {
+
+        if (n > slides.length) { //если мы промотали вправо до конца
+            slideIndex = 1; //возвращаемся к первому
+        }
+        if (n < 1) { //если мы промотали до влево до конца
+            slideIndex = slides.length; //возвращаемся к последнему
+        }
+
+        slides.forEach((item) => item.style.display = 'none');  //скрываем слайды
+        dots.forEach((item) => item.classList.remove('dot-active'));  //убираем подсвеченность точек переключения
+
+        slides[slideIndex - 1].style.display = 'block'; //показываем нужный слайд
+        dots[slideIndex - 1].classList.add('dot-active'); //подсвечиваем соот точку
+
+    }
+    
+    function plusSlides(n) { //уменьшаем или увеличиваем номер слайда в зависимости по какой кнопке был клик
+        showSlides(slideIndex += n); //показываем соот слайд
+    }
+
+    function currentSlide(n) { //передаем номер кликнутой точки
+        showSlides(slideIndex = n); //показываем соот слайд
+    }
+
+    prev.addEventListener('click', function() {
+        plusSlides(-1); //перемещаемся на слайд назад
+    });
+
+    next.addEventListener('click', function() {
+        plusSlides(1); //перемещаемся на слайд вперед
+    });
+
+    dotsWrap.addEventListener('click', function(event) {
+        for (let i = 0; i < dots.length + 1; i++) { //данная конструкция реализована,
+            if (event.target.classList.contains('dot') && event.target == dots[i - 1]) { //чтобы получить корректный порядковый номер
+                currentSlide(i); //и передать его ф-ии слайдера
+            }
+        }
+    });
 
 });
 
