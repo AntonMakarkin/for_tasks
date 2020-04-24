@@ -1,0 +1,19 @@
+{
+  "name": "for_tasks_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "ArrowFunctions.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AntonMakarkin/for_tasks.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AntonMakarkin/for_tasks/issues"
+  },
+  "homepage": "https://github.com/AntonMakarkin/for_tasks#readme"
+}
