@@ -8,9 +8,9 @@ let obj = {
     number: 5,
     sayNumber: function() {
         let sayName = () => {
-            console.log(this);
+            console.log(this.number);
         };
-        say();
+        sayName();
     }
 };
 
